@@ -52,6 +52,18 @@
 
 # Установка
 
+Необходимо скачать **два файла**:
+
+### install.sh
+
+```bash
+wget https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/install.sh -O install.sh
+```
+### whitelist.txt
+```bash
+wget https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/whitelist.txt -O whitelist.txt
+```
+
 Сделать скрипт исполняемым:
 
 ```bash
