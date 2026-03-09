@@ -67,13 +67,13 @@ wget https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/whitelist.txt
 Сделать скрипт исполняемым:
 
 ```bash
-chmod +x install_socks5.sh
+chmod +x install.sh
 ````
 
 Запустить установку:
 
 ```bash
-sudo ./install_socks5.sh
+sudo ./install.sh
 ```
 
 Скрипт:
