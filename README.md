@@ -146,5 +146,3 @@ systemctl stop danted
 systemctl disable danted
 ```
 
-```
-```
