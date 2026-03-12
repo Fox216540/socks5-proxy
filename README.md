@@ -237,6 +237,57 @@ chmod +x mobile-client-android-arm64
 mobile client connected
 ```
 
+# Установка клиента на телефон (сборка в Termux)
+## 1. Установить зависимости
+```
+pkg update
+pkg install golang wget
+```
+## 2. Создать папку build
+```
+mkdir build
+```
+```
+cd build
+```
+## 3. Скачать исходник клиента
+```
+wget https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/build/mobile-client.go
+```
+### Если wget не работает:
+```
+curl -L -O https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/build/mobile-client.go
+```
+## 4. Создать go.mod
+### Инициализировать Go-модуль:
+```
+go mod init mobile-client
+```
+### Это создаст файл:
+```
+go.mod
+```
+## 5. Установить зависимости
+```
+go mod tidy
+```
+### Go автоматически скачает все необходимые зависимости.
+## 6. Собрать клиент
+```
+go build -o mobile-client
+```
+## 7. Сделать исполняемым
+```
+chmod +x mobile-client
+```
+## 8. Запуск
+```
+./mobile-client SERVER_IP:50003
+```
+Пример:
+```
+./mobile-client 217.154.97.70:50003
+```
 ---
 
 # Проверка Mobile Proxy
