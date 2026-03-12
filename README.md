@@ -334,7 +334,3 @@ systemctl disable danted
 Ctrl + C
 ```
 
----
-
-```
-```
