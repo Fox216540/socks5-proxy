@@ -59,6 +59,11 @@
 ```bash
 wget https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/install.sh -O install.sh
 ```
+### reverse.txt
+```bash
+wget https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/reverse.txt -O reverse.txt
+```
+
 ### whitelist.txt
 ```bash
 wget https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/whitelist.txt -O whitelist.txt
