@@ -8,6 +8,7 @@ import (
 	"net"
 	"os"
 	"strings"
+	"sync/atomic"
 	"time"
 
 	"github.com/hashicorp/yamux"
@@ -18,6 +19,12 @@ const (
 	heartbeatInterval = 20 * time.Second
 )
 
+var (
+	totalUp   uint64
+	totalDown uint64
+)
+
+func main() 
 func main() {
 
 	if len(os.Args) < 2 {
@@ -117,5 +124,9 @@ func handle(stream net.Conn) {
 	stream.Close()
 	up := <-upCh
 
-	log.Printf("proxy done: %s -> %s (up=%d bytes err=%v, down=%d bytes err=%v)", stream.RemoteAddr(), addr, up.n, up.err, downN, downErr)
+	atomic.AddUint64(&totalUp, uint64(up.n))
+	atomic.AddUint64(&totalDown, uint64(downN))
+	totalUpNow := atomic.LoadUint64(&totalUp)
+	totalDownNow := atomic.LoadUint64(&totalDown)
+	log.Printf("proxy done: %s -> %s (up=%d bytes err=%v, down=%d bytes err=%v, total_up=%d bytes, total_down=%d bytes)", stream.RemoteAddr(), addr, up.n, up.err, downN, downErr, totalUpNow, totalDownNow)
 }
