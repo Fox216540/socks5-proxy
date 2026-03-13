@@ -24,7 +24,6 @@ var (
 	totalDown uint64
 )
 
-func main() 
 func main() {
 
 	if len(os.Args) < 2 {
