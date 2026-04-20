@@ -17,6 +17,9 @@ android {
 
     buildTypes {
         release {
+            // Ensure release APK is installable in local/test builds.
+            // Replace with a dedicated production keystore for publishing.
+            signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

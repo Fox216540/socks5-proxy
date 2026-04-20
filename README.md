@@ -33,6 +33,18 @@ gradle :app:assembleDebug --no-daemon
 android-ui/app/build/outputs/apk/debug/app-debug.apk
 ```
 
+Релизный APK в GitHub Releases публикуется как:
+
+```text
+mobile-proxy.apk
+```
+
+Скачать последний релизный APK:
+
+```bash
+wget https://github.com/Fox216540/socks5-proxy/releases/latest/download/mobile-proxy.apk
+```
+
 ---
 
 # Возможности
