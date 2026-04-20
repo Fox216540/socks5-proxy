@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/ipInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="IP Address"
+        android:inputType="textUri"
+        android:maxLines="1" />
+
+    <EditText
+        android:id="@+id/portInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="Port"
+        android:inputType="number"
+        android:maxLines="1" />
+
+    <Switch
+        android:id="@+id/tlsSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Use TLS (optional)" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/runSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Proxy OFF"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/clearLogsBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Clear logs" />
+
+    <TextView
+        android:id="@+id/logsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Logs"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:id="@+id/logsScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:background="#121212"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/logsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#D7FFD7"
+            android:textSize="12sp"
+            android:typeface="monospace" />
+    </ScrollView>
+
+</LinearLayout>
