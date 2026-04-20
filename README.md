@@ -4,6 +4,35 @@
 
 Дополнительно поддерживается **Reverse Mobile SOCKS**, позволяющий использовать **мобильный интернет телефона как прокси на VPS**.
 
+## Android AAR (gomobile)
+
+Go-клиент уже подготовлен для сборки в AAR (`package client` с экспортируемыми `Start`, `StartWithTLS`, `Stop`).
+
+Сборка:
+
+```bash
+./build/build-android-aar.sh
+```
+
+Подробная Android-интеграция (AAR, Gradle, Foreground Service, Kotlin API) описана в [ANDROID_AAR.md](ANDROID_AAR.md).
+
+## Android APK (Kotlin UI)
+
+Android-приложение находится в папке `android-ui`.
+
+Сборка debug APK:
+
+```bash
+cd android-ui
+gradle :app:assembleDebug --no-daemon
+```
+
+Результат:
+
+```text
+android-ui/app/build/outputs/apk/debug/app-debug.apk
+```
+
 ---
 
 # Возможности
@@ -241,46 +270,35 @@ mobile client connected
 ## 1. Установить зависимости
 ```
 pkg update
-pkg install golang wget
+pkg install golang git
 ```
-## 2. Создать папку build
+## 2. Клонировать репозиторий
 ```
-mkdir build
+wget https://github.com/Fox216540/socks5-proxy/archive/refs/heads/main.zip -O socks5-proxy.zip
+pkg install unzip -y
+unzip socks5-proxy.zip
 ```
+или:
 ```
-cd build
+git clone https://github.com/Fox216540/socks5-proxy.git
 ```
-## 3. Скачать исходник клиента
+## 3. Перейти в проект
 ```
-wget https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/build/mobile-client.go
+cd socks5-proxy
 ```
-### Если wget не работает:
-```
-curl -L -O https://raw.githubusercontent.com/Fox216540/socks5-proxy/main/build/mobile-client.go
-```
-## 4. Создать go.mod
-### Инициализировать Go-модуль:
-```
-go mod init mobile-client
-```
-### Это создаст файл:
-```
-go.mod
-```
-## 5. Установить зависимости
+## 4. Установить зависимости
 ```
 go mod tidy
 ```
-### Go автоматически скачает все необходимые зависимости.
-## 6. Собрать клиент
+## 5. Собрать клиент
 ```
-go build -o mobile-client
+go build -o mobile-client ./cmd/mobile-client
 ```
-## 7. Сделать исполняемым
+## 6. Сделать исполняемым
 ```
 chmod +x mobile-client
 ```
-## 8. Запуск
+## 7. Запуск
 ```
 ./mobile-client SERVER_IP:50003
 ```
