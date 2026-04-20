@@ -1,0 +1,29 @@
+# OS / metadata
+.DS_Store
+Thumbs.db
+*.Zone.Identifier
+
+# IDE
+.idea/
+*.iml
+
+# Local agent/cache
+.codex
+
+# Go outputs
+mobile-client
+proxy-server
+go.work
+go.work.sum
+
+# Root build artifacts
+build/client.aar
+build/client-sources.jar
+
+# Android project
+android-ui/.gradle/
+android-ui/local.properties
+android-ui/**/build/
+android-ui/app/libs/client.aar
+android-ui/*.apk
+android-ui/**/*.apk
