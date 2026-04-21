@@ -11,8 +11,6 @@ Thumbs.db
 .codex
 
 # Go outputs
-mobile-client
-proxy-server
 go.work
 go.work.sum
 
