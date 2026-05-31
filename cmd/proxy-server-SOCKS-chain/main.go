@@ -40,9 +40,9 @@ func main() {
 		log.Fatal("LOGIN or PASSWORD missing")
 	}
 
-	go watchReverse(login, password)
-
 	startMainProxy(login, password)
+
+	go watchReverse(login, password)
 
 	select {}
 }
@@ -131,8 +131,9 @@ func startReverseProxy(port, target int, login, password string) {
 	conf := &socks5.Config{
 		Credentials: auth,
 		Dial: func(ctx context.Context, network, addr string) (net.Conn, error) {
-			return dialViaSocks(target, addr)
+			return dialViaSocks(target, network, addr)
 		},
+		Resolver: socks5.DNSResolver{},
 	}
 
 	server, err := socks5.New(conf)
@@ -157,11 +158,11 @@ func startReverseProxy(port, target int, login, password string) {
 
 	err = server.Serve(ln)
 	if err != nil {
-		log.Println(err)
+		log.Printf("serve %d failed: %v", port, err)
 	}
 }
 
-func dialViaSocks(target int, addr string) (net.Conn, error) {
+func dialViaSocks(target int, network, addr string) (net.Conn, error) {
 	dialer, err := proxy.SOCKS5(
 		"tcp",
 		fmt.Sprintf("127.0.0.1:%d", target),
@@ -172,5 +173,5 @@ func dialViaSocks(target int, addr string) (net.Conn, error) {
 		return nil, err
 	}
 
-	return dialer.Dial("tcp", addr)
+	return dialer.Dial(network, addr)
 }
