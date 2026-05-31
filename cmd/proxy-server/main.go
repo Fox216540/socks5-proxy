@@ -28,8 +28,28 @@ func main() {
 	flag.Parse()
 
 	args := flag.Args()
+	if len(args) < 1 {
+		fmt.Println("usage:")
+		fmt.Println("  ./proxy-server socks_port [user:pass] [--no-tls] [--cert cert.pem] [--key key.pem]")
+		fmt.Println("  ./proxy-server reverse_port socks_port [user:pass] [--no-tls] [--cert cert.pem] [--key key.pem]")
+		return
+	}
+
+	if len(args) == 1 || (len(args) == 2 && strings.Contains(args[1], ":")) {
+		socksPort := args[0]
+		credentials := ""
+		if len(args) == 2 {
+			credentials = args[1]
+		}
+
+		go startSocks(socksPort, credentials, false)
+		select {}
+	}
+
 	if len(args) < 2 {
-		fmt.Println("usage: ./proxy-server reverse_port socks_port [user:pass] [--no-tls] [--cert cert.pem] [--key key.pem]")
+		fmt.Println("usage:")
+		fmt.Println("  ./proxy-server socks_port [user:pass] [--no-tls] [--cert cert.pem] [--key key.pem]")
+		fmt.Println("  ./proxy-server reverse_port socks_port [user:pass] [--no-tls] [--cert cert.pem] [--key key.pem]")
 		return
 	}
 
@@ -41,7 +61,7 @@ func main() {
 	}
 
 	go reverseListener(reversePort, *noTLS, *certFile, *keyFile)
-	go startSocks(socksPort, credentials)
+	go startSocks(socksPort, credentials, true)
 
 	select {}
 }
@@ -100,12 +120,14 @@ func reverseListener(port string, noTLS bool, certFile string, keyFile string) {
 	}
 }
 
-func startSocks(port string, credentials string) {
+func startSocks(port string, credentials string, reverse bool) {
 
 	addr := "0.0.0.0:" + port
 
-	conf := &socks5.Config{
-		Dial: func(ctx context.Context, network, addr string) (net.Conn, error) {
+	conf := &socks5.Config{}
+
+	if reverse {
+		conf.Dial = func(ctx context.Context, network, addr string) (net.Conn, error) {
 
 			mu.RLock()
 			session := currentSession
@@ -129,7 +151,7 @@ func startSocks(port string, credentials string) {
 			}
 
 			return stream, nil
-		},
+		}
 	}
 
 	if credentials != "" {
@@ -155,7 +177,11 @@ func startSocks(port string, credentials string) {
 		log.Fatal(err)
 	}
 
-	log.Println("SOCKS5 listening on", addr)
+	if reverse {
+		log.Println("reverse SOCKS5 listening on", addr)
+	} else {
+		log.Println("direct SOCKS5 listening on", addr)
+	}
 
 	server.ListenAndServe("tcp", addr)
 }
