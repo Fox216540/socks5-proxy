@@ -138,8 +138,15 @@ func startSocks(port string, credentials string) {
 			log.Fatalf("invalid credentials %q, expected user:pass", credentials)
 		}
 
-		conf.Credentials = socks5.StaticCredentials{
+		creds := socks5.StaticCredentials{
 			user: pass,
+		}
+
+		conf.Credentials = creds
+		conf.AuthMethods = []socks5.Authenticator{
+			socks5.UserPassAuthenticator{
+				Credentials: creds,
+			},
 		}
 	}
 
