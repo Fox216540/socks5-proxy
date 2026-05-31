@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"strings"
 	"sync"
 	"time"
 
@@ -28,15 +29,19 @@ func main() {
 
 	args := flag.Args()
 	if len(args) < 2 {
-		fmt.Println("usage: ./proxy-server reverse_port socks_port [--no-tls] [--cert cert.pem] [--key key.pem]")
+		fmt.Println("usage: ./proxy-server reverse_port socks_port [user:pass] [--no-tls] [--cert cert.pem] [--key key.pem]")
 		return
 	}
 
 	reversePort := args[0]
 	socksPort := args[1]
+	credentials := ""
+	if len(args) >= 3 {
+		credentials = args[2]
+	}
 
 	go reverseListener(reversePort, *noTLS, *certFile, *keyFile)
-	go startSocks(socksPort)
+	go startSocks(socksPort, credentials)
 
 	select {}
 }
@@ -95,9 +100,9 @@ func reverseListener(port string, noTLS bool, certFile string, keyFile string) {
 	}
 }
 
-func startSocks(port string) {
+func startSocks(port string, credentials string) {
 
-	addr := "127.0.0.1:" + port
+	addr := "0.0.0.0:" + port
 
 	conf := &socks5.Config{
 		Dial: func(ctx context.Context, network, addr string) (net.Conn, error) {
@@ -125,6 +130,17 @@ func startSocks(port string) {
 
 			return stream, nil
 		},
+	}
+
+	if credentials != "" {
+		user, pass, ok := strings.Cut(credentials, ":")
+		if !ok || user == "" || pass == "" {
+			log.Fatalf("invalid credentials %q, expected user:pass", credentials)
+		}
+
+		conf.Credentials = socks5.StaticCredentials{
+			user: pass,
+		}
 	}
 
 	server, err := socks5.New(conf)
